@@ -15,7 +15,6 @@ def read_words(): # Définir une fonction pour lire les mots depuis le fichier
     
 
 
-
 def read_sequences(): # Définir une fonction pour lire les séquences de protéines
     sequences={} # Initialiser un dictionnaire vide pour stocker les séquences (clé=ID, valeur=séquence)
     with open(fichier_seq,"r") as sq: # Ouvrir le fichier des séquences en mode lecture
@@ -29,35 +28,34 @@ def read_sequences(): # Définir une fonction pour lire les séquences de proté
     return(sequences) # Retourner le dictionnaire des séquences
 
 def search_words_in_proteome(words,sequences): # Définir une fonction pour chercher les mots dans les séquences
-    resultat = {} # Initialiser un dictionnaire pour stocker les résultats (mot -> nombre d'apparitions)
+    resultat = {} # Initialiser un dictionnaire pour stocker les résultats (mot -> nombre d'occurrences)
     for word in words : # Pour chaque mot dans la liste des mots
         compteur = 0 # Initialiser un compteur à 0 pour ce mot
         for seq in sequences.values() : # Pour chaque séquence dans le dictionnaire des séquences
-            if word in seq: # Si le mot est présent dans la séquence
-                compteur+=1 # Incrémenter le compteur
-        resultat[word]=compteur # Enregistrer le nombre d'apparitions pour ce mot dans le dictionnaire résultat
+            compteur += seq.count(word) # Compter le nombre d'occurrences du mot dans la séquence
+        resultat[word]=compteur # Enregistrer le nombre total d'occurrences pour ce mot
         if compteur > 0 : # Si le mot a été trouvé au moins une fois
-            print(f"{word} trouver dans {compteur} séquences") # Afficher combien de fois il a été trouvé
+            print(f"{word} trouvé {compteur} fois") # Afficher combien de fois il a été trouvé
     return resultat # Retourner le dictionnaire des résultats
 
 def find_most_frequent_word(res,total_sequences): # Définir une fonction pour trouver le mot le plus fréquent
     mot_max = None # Initialiser le mot le plus fréquent à None (rien)
     max_count = 0 # Initialiser le compteur maximum à 0
 
-    for mot , count in res.items(): # Parcourir chaque mot et son nombre d'apparitions dans les résultats
-        if count > max_count : # Si le nombre d'apparitions est supérieur au maximum actuel
+    for mot , count in res.items(): # Parcourir chaque mot et son nombre d'occurrences
+        if count > max_count : # Si le nombre d'occurrences est supérieur au maximum actuel
             max_count = count # Mettre à jour le nouveau maximum
             mot_max = mot # Mettre à jour le mot correspondant au maximum
 
-    if mot_max is None: # Si aucun mot n'a été trouvé (mot_max est toujours None)
-        print("Aucun mot trouvé dans les séquences.") # Afficher un message
-        return None, 0, 0 # Retourner des valeurs vides
+    if mot_max is None: # Si aucun mot n'a été trouvé
+        print("Aucun mot trouvé dans les séquences.")
+        return None, 0, 0
         
-    pourcentage = (max_count / total_sequences) * 100 # Calculer le pourcentage de séquences contenant ce mot
+    # Le pourcentage n'a plus de sens ici car on compte les occurrences totales, pas le nombre de séquences
+    # On pourrait calculer une moyenne par séquence, mais pour l'instant on enlève le pourcentage.
 
-    print(f"=> {mot_max} trouver dans {max_count} sequences") # Afficher le mot le plus fréquent et son nombre d'apparitions
-    print(f"Pourcentage : {pourcentage:.2f}% des séquences") # Afficher le pourcentage calculé
-    return mot_max, max_count, pourcentage # Retourner le mot, le nombre et le pourcentage
+    print(f"=> {mot_max} trouvé {max_count} fois au total") # Afficher le mot le plus fréquent et son nombre d'occurrences
+    return mot_max, max_count, 0 # On retourne 0 pour le pourcentage pour ne pas casser l'interface
 
 def main():
     words=read_words() # Appeler la fonction read_words et stocker le résultat dans la variable 'words'

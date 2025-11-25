@@ -28,17 +28,10 @@ def run_analysis(): # Définir la fonction qui sera appelée quand on clique sur
             
             # 4. Trouver le plus fréquent
             result_area.insert(END, "Calcul du mot le plus fréquent...\n") # Afficher qu'on calcule le résultat final
-            mot, count, percent = lib.find_most_frequent_word(res, len(proteome)) # Trouver le gagnant
-            
-            # Afficher les résultats
-            result_area.insert(END, "\n" + "="*30 + "\n") # Ajouter une ligne de séparation
-            result_area.insert(END, "RÉSULTATS\n") # Écrire le titre "RÉSULTATS"
-            result_area.insert(END, "="*30 + "\n") # Ajouter une autre ligne de séparation
-            
             if mot: # Si un mot a été trouvé (si 'mot' n'est pas None)
                 result_area.insert(END, f"Mot le plus fréquent : {mot}\n") # Afficher le mot gagnant
-                result_area.insert(END, f"Nombre d'apparitions : {count}\n") # Afficher son nombre d'apparitions
-                result_area.insert(END, f"Pourcentage de séquences : {percent:.2f}%\n") # Afficher le pourcentage avec 2 chiffres après la virgule
+                result_area.insert(END, f"Nombre d'occurrences totales : {count}\n") # Afficher son nombre d'occurrences
+                # result_area.insert(END, f"Pourcentage de séquences : {percent:.2f}%\n") # Pourcentage désactivé
                 messagebox.showinfo("Succès", f"Analyse terminée !\nMot trouvé : {mot}") # Afficher une fenêtre pop-up de succès
             else: # Sinon (si aucun mot n'a été trouvé)
                 result_area.insert(END, "Aucun mot trouvé.\n") # L'écrire dans la zone de texte
